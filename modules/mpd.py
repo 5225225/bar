@@ -43,29 +43,61 @@ while True:
     
     out = "{Title} - {Album} [{bitrate}kbps]".format(**infodict)
 
+    titlecolour = "#ac4142"
+    albumcolour = "#6a9fb5"
+    bitratecolour = "#a1b56c"
+    noformatting = "#dddddd"
+
+    dark_titlecolour = "#542020"
+    dark_albumcolour = "#3c5a66"
+    dark_bitratecolour = "#4f5935"
+    dark_noformatting = "#6e6e6e"
+
+    TC = str()
+    AC = str()
+    BC = str()
+    NF = str()
+
+    if infodict["state"] == "pause":
+        TC = dark_titlecolour
+        AC = dark_albumcolour
+        BC = dark_bitratecolour
+        NF = dark_noformatting
+    else:
+        TC = titlecolour
+        AC = albumcolour
+        BC = bitratecolour
+        NF = noformatting
 
     #TODO make this code not ugly
 
     titleblock = {"full_text": infodict["Title"],
-                  "color": "#ac4142"
+                  "color": TC
         }
 
     albumblock = {"full_text": infodict["Album"],
-                  "color": "#6a9fb5"
+                  "color": AC
         }
 
 
 
-    sep = {"full_text":" - "}
+    sep = {"full_text":" - ",
+        "color": NF
+        }
 
-    ob = {"full_text":" ["}
+    ob = {"full_text":" [",
+        "color": NF }
     bitrate = {"full_text": infodict["bitrate"],
-                  "color": "#a1b56c"
+                  "color": BC
         }
 
-    cb = {"full_text":"]"}
+    cb = {"full_text":"]",
+        "color": NF
+    }
 
-    kbps = {"full_text":" kbps"} 
+    kbps = {"full_text":" kbps",
+        "color": NF
+    } 
     blocklist = [titleblock, sep, albumblock, ob, bitrate, kbps, cb]
     linelib.sendmultiblock(ID, blocklist)
 
