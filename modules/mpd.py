@@ -71,34 +71,20 @@ while True:
 
     #TODO make this code not ugly
 
-    titleblock = {"full_text": infodict["Title"],
+    titleblock = {"full_text": infodict["Title"] + " ",
                   "color": TC
         }
 
-    albumblock = {"full_text": infodict["Album"],
+    albumblock = {"full_text": infodict["Album"] + " ",
                   "color": AC
         }
 
 
-
-    sep = {"full_text":" - ",
-        "color": NF
-        }
-
-    ob = {"full_text":" [",
-        "color": NF }
-    bitrate = {"full_text": infodict["bitrate"],
+    bitrate = {"full_text": infodict["bitrate"] + " kbps",
                   "color": BC
         }
 
-    cb = {"full_text":"]",
-        "color": NF
-    }
-
-    kbps = {"full_text":" kbps",
-        "color": NF
-    } 
-    blocklist = [titleblock, sep, albumblock, ob, bitrate, kbps, cb]
+    blocklist = [titleblock, albumblock, bitrate]
     linelib.sendmultiblock(ID, blocklist)
 
     linelib.sendPID(ID)
