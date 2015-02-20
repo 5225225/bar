@@ -15,7 +15,7 @@ r = praw.Reddit(user_agent="unread message checker by /u/5225225")
 auth = open(sys.argv[1])
 username, password = auth.read().split(":")
 auth.close()
-r.login(username, password)
+r.login(username, password.strip())
 
 while True:
     x = r.get_unread()
