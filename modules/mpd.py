@@ -1,6 +1,7 @@
 import socket
 import signal
 import linelib
+import time
 
 ID = "mpd"
 
@@ -21,9 +22,12 @@ def mpd2dict(output):
         d[key] = val
     return d
 
-while True:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(("localhost", 6600))
+def sendline():
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect(("localhost", 6600))
+    except ConnectionRefusedError:
+        return
 
     version = sock.recv(2048)
 
@@ -32,6 +36,9 @@ while True:
     sock.send(b"currentsong\n")
     currsong = mpd2dict(sock.recv(2048).decode("UTF-8"))
 
+    if currsong == {}:
+        return
+
     sock.send(b"status\n")
     status = mpd2dict(sock.recv(2048).decode("UTF-8"))
 
@@ -39,9 +46,6 @@ while True:
     infodict = currsong.copy()
     infodict.update(status)
 
-    print(infodict)
-    
-    out = "{Title} - {Album} [{bitrate}kbps]".format(**infodict)
 
     titlecolour = "#ac4142"
     albumcolour = "#6a9fb5"
@@ -89,3 +93,7 @@ while True:
 
     linelib.sendPID(ID)
     linelib.waitsig(1)
+
+while True:
+    sendline()
+    time.sleep(1)
