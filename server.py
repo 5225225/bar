@@ -4,8 +4,8 @@ import time
 import os
 import signal
 
+
 class block:
-    
     def __init__(self, blockdict):
         self.toprint = {}
         self.atime = time.time()
@@ -15,10 +15,11 @@ class block:
 
 blocks = {}
 
+
 def tojsonstr():
     x = []
-    
     torm = []
+
     for ID in blocks:
         blocks[ID].ID = ID
         blocks[ID].toprint["name"] = ID
@@ -35,9 +36,6 @@ def tojsonstr():
         x.append(blocks[ID].toprint)
 
     return json.dumps(sorted(x, key=lambda block: block["name"]))
-
-def fromdict(blockdict):
-    return x
 
 pids = {}
 clicks = {}

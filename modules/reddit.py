@@ -3,7 +3,8 @@ import praw
 import signal
 import linelib
 
-def handler(x,y):
+
+def handler(x, y):
     pass
 
 signal.signal(signal.SIGUSR1, handler)
@@ -21,6 +22,7 @@ while True:
     x = r.get_unread()
     x = list(x)
     if len(x) > 0:
-        linelib.sendblock(ID, {"full_text": "[{}]".format(str(len(x))), "color": "#ff4500"})
+        linelib.sendblock(ID, {"full_text": "[{}]".format(str(len(x))),
+                               "color": "#ff4500"})
     linelib.sendPID(ID)
     linelib.waitsig(5)

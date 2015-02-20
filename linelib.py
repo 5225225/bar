@@ -3,6 +3,7 @@ import json
 import os
 import signal
 
+
 def getclick(ID):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(("localhost", 1337))
@@ -11,9 +12,11 @@ def getclick(ID):
     s.close()
     return clickobj
 
+
 def waitsig(seconds):
     signal.alarm(int(seconds))
     signal.pause()
+
 
 def sendclick(x):
     # NOT TO BE USED BY MODULES
@@ -23,11 +26,13 @@ def sendclick(x):
     s.send(bytes("CLICK {}".format(x.strip()), "UTF-8"))
     s.close()
 
+
 def sendPID(ID):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(("localhost", 1337))
     s.send(bytes("PID {},{}".format(os.getpid(), ID), "UTF-8"))
     s.close()
+
 
 def reqline():
     # you are expected to handle connectionrefusederrors yourself
@@ -37,10 +42,12 @@ def reqline():
     return s.recv(2048)
     s.close()
 
+
 def sendblock(blockid, obj):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(("localhost", 1337))
-    s.send(bytes("BLOCK {} {}".format(blockid, json.dumps(obj)),"UTF-8"))
+    s.send(bytes("BLOCK {} {}".format(blockid, json.dumps(obj)), "UTF-8"))
+
 
 def sendmultiblock(blockid, blocks):
     for index, obj in enumerate(blocks):
@@ -49,4 +56,6 @@ def sendmultiblock(blockid, blocks):
         if not index == len(blocks)-1:
             obj["separator"] = False
             obj["separator_block_width"] = 0
-        s.send(bytes("BLOCK {} {}".format(blockid + str(index), json.dumps(obj)),"UTF-8"))
+        s.send(bytes("BLOCK {} {}".format(blockid + str(index),
+                                          json.dumps(obj)),
+                     "UTF-8"))

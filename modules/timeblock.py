@@ -1,10 +1,9 @@
 import linelib
-import time
 import datetime
 import signal
 
 
-def handler(x,y):
+def handler(x, y):
     pass
 
 signal.signal(signal.SIGUSR1, handler)
