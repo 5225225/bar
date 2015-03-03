@@ -1,7 +1,8 @@
 import signal
 import linelib
 
-def handler(x,y):
+
+def handler(x, y):
     pass
 
 signal.signal(signal.SIGUSR1, handler)
