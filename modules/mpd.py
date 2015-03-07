@@ -68,8 +68,8 @@ def sendline():
     # TODO make this code not ugly
 
     formatcodes = "<span foreground='{}'>{}</span> - <span "\
-    "foreground='{}'>{}</span>".format(TC, infodict["Title"], AC,
-    infodict["Album"])
+        "foreground='{}'>{}</span>".format(TC, infodict["Title"], AC,
+                                           infodict["Album"])
 
     linelib.sendblock(ID, {"full_text": formatcodes})
 
