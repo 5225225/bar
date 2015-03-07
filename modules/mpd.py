@@ -50,11 +50,9 @@ def sendline():
 
     titlecolour = "#ac4142"
     albumcolour = "#6a9fb5"
-    bitratecolour = "#a1b56c"
 
     dark_titlecolour = "#542020"
     dark_albumcolour = "#3c5a66"
-    dark_bitratecolour = "#4f5935"
 
     TC = str()
     AC = str()
@@ -63,32 +61,20 @@ def sendline():
     if infodict["state"] == "pause":
         TC = dark_titlecolour
         AC = dark_albumcolour
-        BC = dark_bitratecolour
     else:
         TC = titlecolour
         AC = albumcolour
-        BC = bitratecolour
 
     # TODO make this code not ugly
 
-    titleblock = {"full_text": infodict["Title"] + " ",
-                  "color": TC
-                  }
+    formatcodes = "<span foreground='{}'>{}</span> - <span "\
+    "foreground='{}'>{}</span>".format(TC, infodict["Title"], AC,
+    infodict["Album"])
 
-    albumblock = {"full_text": infodict["Album"] + " ",
-                  "color": AC
-                  }
-
-    bitrate = {"full_text": infodict["bitrate"] + " kbps",
-               "color": BC
-               }
-
-    blocklist = [titleblock, albumblock, bitrate]
-    linelib.sendmultiblock(ID, blocklist)
+    linelib.sendblock(ID, {"full_text": formatcodes})
 
     linelib.sendPID(ID)
     linelib.waitsig(1)
 
 while True:
     sendline()
-    time.sleep(1)
