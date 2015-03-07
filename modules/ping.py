@@ -15,9 +15,16 @@ ID = "ping"
 toping = "8.8.8.8"
 
 while True:
-    raw = subprocess.check_output(["ping", "-c1", toping])
-    line = raw.decode("UTF8").split("\n")[1]
-    time = line.split(" ")[6][5:]
-    linelib.sendblock(ID, {"full_text": "{}ms".format(time)})
-    linelib.sendPID(ID)
-    linelib.waitsig(5)
+    try:
+        raw = subprocess.check_output(["ping", "-c1", toping])
+        line = raw.decode("UTF8").split("\n")[1]
+        time = line.split(" ")[6][5:]
+        linelib.sendblock(ID, {"full_text":"{}ms".format(time)})
+        linelib.sendPID(ID)
+        linelib.waitsig(5)
+    except subprocess.CalledProcessError:
+        linelib.sendblock(ID, {"full_text": "NOT CONNECTED".format(time),
+            "color": "#ff0000"
+        })
+        linelib.waitsig(1)
+
