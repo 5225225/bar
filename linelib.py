@@ -29,8 +29,12 @@ def sendclick(x):
 
 def sendPID(ID):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(("localhost", 1337))
-    s.send(bytes("PID {},{}".format(os.getpid(), ID), "UTF-8"))
+    try:
+        s.connect(("localhost", 1337))
+        s.send(bytes("PID {},{}".format(os.getpid(), ID), "UTF-8"))
+    except InterruptedError:
+        pass
+
     s.close()
 
 
@@ -45,8 +49,15 @@ def reqline():
 
 def sendblock(blockid, obj):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(("localhost", 1337))
-    s.send(bytes("BLOCK {} {}".format(blockid, json.dumps(obj)), "UTF-8"))
+    try:
+        s.connect(("localhost", 1337))
+        s.send(bytes("BLOCK {} {}".format(blockid, json.dumps(obj)), "UTF-8"))
+    except InterruptedError:
+        # This is very rare, and really only happens if you try to make it
+        # crash by scrolling a lot on a block. Still, the program shouldn't
+        # crash. It's okay to just skip the update this time, it'll get
+        # updated on the next go
+        pass
 
 
 def sendmultiblock(blockid, blocks):
