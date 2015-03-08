@@ -80,6 +80,7 @@ while True:
         ID = data[9:]
         if ID in clicks:
             cs.send(bytes(json.dumps(clicks[ID]), "UTF-8"))
+            del clicks[ID]
         else:
             cs.send(b"")
 
