@@ -2,7 +2,7 @@ import socket
 import signal
 import linelib
 import time
-
+import json
 ID = "mpd"
 
 
@@ -23,7 +23,6 @@ def mpd2dict(output):
         val = val.lstrip()
         d[key] = val
     return d
-
 
 def sendline():
     try:
@@ -72,9 +71,13 @@ def sendline():
                                            infodict["Album"])
 
     linelib.sendblock(ID, {"full_text": formatcodes})
-
     linelib.sendPID(ID)
     linelib.waitsig(1)
+    click = linelib.getclick(ID).decode("UTF-8")
+    if click != "":
+        x = json.loads(click)
+        if x["button"] == 1:
+            sock.send(b"pause\n")
 
 while True:
     sendline()
