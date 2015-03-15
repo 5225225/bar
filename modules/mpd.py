@@ -27,7 +27,7 @@ def mpd2dict(output):
 def sendline():
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect(("localhost", 6600))
+        sock.connect(("127.0.0.2", 6600))
     except ConnectionRefusedError:
         return
 
