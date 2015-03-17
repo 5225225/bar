@@ -71,7 +71,7 @@ def sendline():
     formatcodes = "<span foreground='{}'>{}</span> - <span "\
         "foreground='{}'>{}</span>".format(TC, infodict["Title"], AC,
                                            infodict["Album"])
-
+    formatcodes = formatcodes.replace("&", "&amp;")
     linelib.sendblock(ID, {"full_text": formatcodes})
     linelib.sendPID(ID)
     linelib.waitsig(1)
