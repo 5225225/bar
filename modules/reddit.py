@@ -18,11 +18,18 @@ username, password = auth.read().split(":")
 auth.close()
 r.login(username, password.strip())
 
-while True:
-    x = r.get_unread()
+def sendline():
+    try:
+        x = r.get_unread(fetch=True)
+    except requests.exceptions.HTTPError:
+        #happens when reddit returns a 503. It should come back up soon.
+        return
     x = list(x)
     if len(x) > 0:
         linelib.sendblock(ID, {"full_text": "[{}]".format(str(len(x))),
                                "color": "#ff4500"})
     linelib.sendPID(ID)
     linelib.waitsig(5)
+
+while True:
+    sendline()
