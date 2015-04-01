@@ -29,8 +29,10 @@ def sendline():
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect(("localhost", 6600))
     except ConnectionRefusedError:
+        time.sleep(1)
         return
     except OSError:
+        time.sleep(1)
         return
 
     version = sock.recv(2048)
