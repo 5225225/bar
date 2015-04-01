@@ -1,11 +1,11 @@
 #!/bin/bash
-python ~/src/bar/server.py &
-echo "$!" > pidfile
+python ~/src/bar/server.py > logs/server.log &
+echo "$!" > /home/jack/src/bar/pidfile
 sleep .1
-python ~/src/bar/modules/timeblock.py & 
-python ~/src/bar/modules/ping.py & 
-python ~/src/bar/modules/df.py & 
-python ~/src/bar/modules/mpd.py &
-python ~/src/bar/modules/load.py &
-python ~/src/bar/modules/reddit.py modules/reddit-auth &
+python ~/src/bar/modules/timeblock.py > logs/timeblock.log &
+python ~/src/bar/modules/ping.py > logs/ping.log &
+python ~/src/bar/modules/df.py > logs/df.log &
+python ~/src/bar/modules/mpd.py > logs/mpd.log &
+python ~/src/bar/modules/load.py > logs/load.log &
+python ~/src/bar/modules/reddit.py modules/reddit-auth > logs/reddit.log &
 wait
