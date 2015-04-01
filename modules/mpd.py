@@ -74,7 +74,7 @@ def sendline():
         "foreground='{}'>{}</span>".format(TC, infodict["Title"], AC,
                                            infodict["Album"])
     formatcodes = formatcodes.replace("&", "&amp;")
-    linelib.sendblock(ID, {"full_text": formatcodes})
+    linelib.sendblock(ID, {"full_text": formatcodes, "markup": "pango"})
     linelib.sendPID(ID)
     linelib.waitsig(1)
     click = linelib.getclick(ID).decode("UTF-8")
