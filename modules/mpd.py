@@ -5,6 +5,13 @@ import time
 import json
 ID = "mpd"
 
+def darken(hexcode, amount=.5):
+    r = int(int(hexcode[1:3], 16) * amount)
+    g = int(int(hexcode[3:5], 16) * amount)
+    b = int(int(hexcode[5:7], 16) * amount)
+    return "#{:x}{:x}{:x}".format(r, g, b)
+
+
 
 def handler(x, y):
     pass
@@ -34,8 +41,10 @@ def sendline():
     except OSError:
         time.sleep(1)
         return
-
-    version = sock.recv(2048)
+    try:
+        version = sock.recv(2048)
+    except InterruptedError:
+        pass
 
     assert version == b"OK MPD 0.19.0\n"
 
@@ -50,30 +59,30 @@ def sendline():
 
     infodict = currsong.copy()
     infodict.update(status)
-
+    
+    artistcolour = "#a1b56c"
     titlecolour = "#ac4142"
     albumcolour = "#6a9fb5"
-
-    dark_titlecolour = "#542020"
-    dark_albumcolour = "#3c5a66"
-
-    TC = str()
-    AC = str()
-    BC = str()
+    
 
     if infodict["state"] == "pause":
-        TC = dark_titlecolour
-        AC = dark_albumcolour
-    else:
-        TC = titlecolour
-        AC = albumcolour
+        titlecolour = darken(titlecolour)
+        albumcolour = darken(albumcolour)
+        artistcolour = darken(artistcolour)
 
-    # TODO make this code not ugly
+    block = "<span foreground='{}'>{}</span>"
+    
+    for item in ["Artist", "Title", "Album"]:
+        if item not in infodict:
+            infodict[item] = "Unknown {}".format(item)
 
-    formatcodes = "<span foreground='{}'>{}</span> - <span "\
-        "foreground='{}'>{}</span>".format(TC, infodict["Title"], AC,
-                                           infodict["Album"])
-    formatcodes = formatcodes.replace("&", "&amp;")
+    fmline = "{} - {} - {}".format(
+        block.format(artistcolour,infodict["Artist"]),
+        block.format(titlecolour,infodict["Title"]),
+        block.format(albumcolour,infodict["Album"]),
+    )
+    
+    formatcodes = fmline.replace("&", "&amp;")
     linelib.sendblock(ID, {"full_text": formatcodes, "markup": "pango"})
     linelib.sendPID(ID)
     linelib.waitsig(1)

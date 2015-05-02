@@ -1,2 +1,2 @@
 #!/bin/bash
-kill `< pidfile`
+kill `< /tmp/bar_pidfile`
